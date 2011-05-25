@@ -19,6 +19,7 @@ exports.run = ->
   # Create Project Dir
   fs.mkdirSync "./#{project}", 0755
   fs.mkdirSync "./#{project}/views", 0755
+  fs.mkdirSync "./#{project}/public", 0755
 
   # Create Template Files
   render_template(name, data) for name in [
