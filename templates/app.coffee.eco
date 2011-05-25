@@ -12,6 +12,9 @@ app.use express.static(__dirname + '/public')
 app.get '/', (request, response) ->
   response.render 'index'
 
+# App Errors
+app.use express.errorHandler()
+
 # Listen
 app.listen 3000
 
