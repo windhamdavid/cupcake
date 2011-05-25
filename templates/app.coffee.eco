@@ -5,6 +5,19 @@ app = express.createServer()
 app.register '.coffee', require('coffeekup')
 app.set 'view engine', 'coffee'
 
+# App Configure
+app.configure -> 
+	app.use express.bodyParser()
+	app.use express.methodOverride()
+	app.use app.router
+	
+app.configure 'development', ->
+	app.use express.errorHandler { dumpExceptions: true, showStack: true }
+
+app.configure 'production', ->
+	app.use express.errorHandler
+	
+	
 # Setup Static Files
 app.use express.static(__dirname + '/public')
 
@@ -12,9 +25,8 @@ app.use express.static(__dirname + '/public')
 app.get '/', (request, response) ->
   response.render 'index'
 
-# App Errors
-app.use express.errorHandler()
 
 # Listen
 app.listen 3000
+console.log "listing on port %d", app.address().port
 
