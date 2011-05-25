@@ -4,6 +4,7 @@ app = express.createServer()
 # Setup Template Engine
 app.register '.coffee', require('coffeekup')
 app.set 'view engine', 'coffee'
+# app.set 'view engine', 'eco, jade, coffee' 
 
 # App Configure
 app.configure -> 
@@ -11,11 +12,38 @@ app.configure ->
 	app.use express.methodOverride()
 	app.use app.router
 	
-app.configure 'development', ->
-	app.use express.errorHandler { dumpExceptions: true, showStack: true }
 
-app.configure 'production', ->
-	app.use express.errorHandler
+# Error Handling
+	app.configure 'development', ->
+		app.use express.errorHandler { dumpExceptions: true, showStack: true }
+
+	app.configure 'production', ->
+		app.use express.errorHandler
+	
+
+	exports.throw404 = (req, res) ->
+	  throw new NotFound req.url
+
+	exports.throw500 = (req, res, next) ->
+	  next new Error
+
+	exports.handle404 = (err, req, res, next) ->
+	  if err instanceof NotFound 
+	    res.render '404', 
+	        status: 404, 
+	        error: err, 
+	        title: '404 Error - Page Not Found' 
+
+	  else 
+	    next err
+
+	exports.handle500 = (err, req, res) ->
+	        res.render '500', 
+	                status: 500, 
+	                error: err, 
+	                title: '500 Error - Internal Server Error'
+	
+	
 	
 	
 # Setup Static Files
