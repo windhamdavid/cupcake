@@ -31,6 +31,7 @@ exports.run = ->
     'views/layout.coffee'
     'views/index.coffee'
     'public/app.css'
+    'public/app.js'
   ]
 
   console.log "-----------------"
