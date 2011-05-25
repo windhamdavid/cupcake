@@ -30,6 +30,7 @@ exports.run = ->
     'Procfile'
     'views/layout.coffee'
     'views/index.coffee'
+    'public/app.css'
   ]
 
   console.log "-----------------"
