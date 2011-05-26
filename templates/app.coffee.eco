@@ -1,14 +1,22 @@
 <% if @datastore == '1': %>db = require 'mongoskin'<% else if @datastore == '2': %>db = require 'redis'<% else: %>db = require 'mysql'<% end %>
-<% if @template == '1': %>template = require 'coffeekup'<% else if @template == '2': %>template = require 'eco'<% else: %>template = require 'jade'<% end %>
 
 <% if @framework == '1': %>
 express = require('express')
 app = express.createServer()
 
 # Setup Template Engine
+<% if @template == '1': %>
 app.register '.coffee', require('coffeekup')
 app.set 'view engine', 'coffee'
-# app.set 'view engine', 'eco, jade, coffee' 
+
+<% else if @template == '2': %>
+app.register '.eco', require('eco')
+app.set 'view engine', 'eco'
+<% else if @template == '3': %>
+app.register '.jade', require('jade')
+app.set 'view engine', 'jade'
+<% end %>
+
 
 # App Configure
 app.configure -> 
@@ -63,6 +71,7 @@ app.listen 3000
 console.log "listing on port %d", app.address().port
 
 <% else if @framework == '2': %>
+# Work in progress
 meryl = require('meryl')
 meryl
   .get '/', (req, res) ->
