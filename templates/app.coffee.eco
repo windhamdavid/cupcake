@@ -1,3 +1,7 @@
+<% if @datastore == '1': %>db = require 'mongoskin'<% else if @datastore == '2': %>db = require 'redis'<% else: %>db = require 'mysql'<% end %>
+<% if @template == '1': %>template = require 'coffeekup'<% else if @template == '2': %>template = require 'eco'<% else: %>template = require 'jade'<% end %>
+
+<% if @framework == '1': %>
 express = require('express')
 app = express.createServer()
 
@@ -58,3 +62,12 @@ app.get '/', (request, response) ->
 app.listen 3000
 console.log "listing on port %d", app.address().port
 
+<% else if @framework == '2': %>
+meryl = require('meryl')
+meryl
+  .get '/', (req, res) ->
+    response.end 'Hello World'
+  .run()
+<% else if @framework == '3': %>
+# Insert Zappa here!
+<% end %>
